@@ -1,4 +1,4 @@
-# 디렉터리 구조
+# 디렉터리 구조 /
 ```
 ├── backup_data # 개발환경 DB를 production 서버에 올리기 위한 백업 폴더입니다.
 ├── dev_db      # 개발환경 DB(docker 바인딩 volume을 위한 폴더)
@@ -18,7 +18,7 @@
     └── static
 ```
 
-# /sbd_animal
+# 디렉터리 구조 /sbd_animal
 ```
 ├── __init__.py
 ├── __pycache__
