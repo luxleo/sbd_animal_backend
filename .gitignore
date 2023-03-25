@@ -8,3 +8,4 @@ static/
 dev_db/mysql/
 redis/
 backup_data/
+.env
