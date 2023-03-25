@@ -1,0 +1,47 @@
+version: '3.8'
+services:
+  redis:
+    image: redis
+    container_name: 'sbd_redis'
+    expose:
+      - '6379'
+    restart: always
+  django:
+    image: lux00leo/sbd_animal:1.1
+    environment:
+      DJANGO_SETTINGS_MODULE: "settings.prod"
+      DB_USER: "${DB_USER}"
+      DB_PASSWORD: "${DB_PASSWORD}"
+      DB_HOST: "${DB_HOST}"
+      EMAIL_HOST_USER: "${EMAIL_HOST_USER}"
+      EMAIL_HOST_PASSWORD: "${EMAIL_HOST_PASSWORD}"
+      AWS_ACCESS_KEY_ID: "${AWS_ACCESS_KEY_ID}"
+      AWS_SECRET_ACCESS_KEY: "${AWS_SECRET_ACCESS_KEY}"
+      AWS_STORAGE_BUCKET_NAME: "${AWS_STORAGE_BUCKET_NAME}"
+    ports:
+      - "8000:8000"
+    links:
+      - redis:sbd_redis
+    depends_on:
+      - redis
+    command: bash -c "gunicorn --bind 0:8000 config.wsgi"
+    restart: always
+  celery:
+    image: lux00leo/sbd_animal:1.1
+    environment:
+      DJANGO_SETTINGS_MODULE: "settings.prod"
+      DB_USER: "${DB_USER}"
+      DB_PASSWORD: "${DB_PASSWORD}"
+      DB_HOST: "${DB_HOST}"
+      EMAIL_HOST_USER: "${EMAIL_HOST_USER}"
+      EMAIL_HOST_PASSWORD: "${EMAIL_HOST_PASSWORD}"
+      AWS_ACCESS_KEY_ID: "${AWS_ACCESS_KEY_ID}"
+      AWS_SECRET_ACCESS_KEY: "${AWS_SECRET_ACCESS_KEY}"
+      AWS_STORAGE_BUCKET_NAME: "${AWS_STORAGE_BUCKET_NAME}"
+    links:
+      - redis:sbd_redis
+    depends_on:
+      - redis
+    command: bash -c "celery -A sbd_animal worker -l INFO"
+    restart: always
+

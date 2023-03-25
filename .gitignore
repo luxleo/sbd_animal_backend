@@ -1,0 +1,10 @@
+media/
+node_modules
+docker_dev.py
+dev.py
+local_prod.py
+common.py
+static/
+dev_db/mysql/
+redis/
+backup_data/

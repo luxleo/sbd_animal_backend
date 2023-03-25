@@ -1,0 +1,8 @@
+**/sbd_admin_react
+**/*.git
+**/static
+**/local_prod.py
+**/new_storage.py
+**/dummy*
+**/docs
+**/media

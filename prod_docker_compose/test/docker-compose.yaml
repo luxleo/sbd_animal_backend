@@ -1,0 +1,58 @@
+version: '3.8'
+services:
+  db:
+    image: mysql
+    container_name: 'test_sbd_mysql_db'
+    expose:
+      - "3306"
+    environment:
+      MYSQL_DATABASE: "sbd_animal"
+      MYSQL_USER: "${DB_USER}"
+      MYSQL_PASSWORD: "${DB_PASSWORD}"
+      MYSQL_ROOT_PASSWORD: "${DB_PASSWORD}"
+    volumes:
+      - ../../dev_db/mysql:/var/lib/mysql
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+  redis:
+    image: redis
+    container_name: "test_sbd_redis"
+    expose:
+      - "6379"
+    restart: unless-stopped
+    volumes:
+      - ../../dev_db/redis:/dataw
+    depends_on:
+      - db
+  django:
+    image: sbd_animal_test_img
+    container_name: "test_sbd_django"
+    ports:
+    - "8000:8000"
+    environment:
+      # celery backend로 redis container 설정
+     DJANGO_SETTINGS_MODULE: "settings.docker_dev"
+    links:
+      - db:test_sbd_mysql_db
+      - redis:test_sbd_redis
+    depends_on:
+      - redis
+    restart: always
+    command:
+      - bash -c "gunicorn --bind 0:8000 config.wsgi"
+  celery:
+    image: sbd_animal_test_img
+    container_name: "test_sbd_celery"
+    environment:
+      DJANGO_SETTINGS_MODULE: "settings.docker_dev"
+    restart: "always"
+    links:
+      - redis:test_sbd_redis
+    depends_on:
+      - redis
+    command:
+      - bash -c "celery -A sbd_animal worker -l INFO"
+  nginx:
+    image: nginx
+    container_name: "test_sbd_nginx"
