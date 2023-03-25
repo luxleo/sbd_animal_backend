@@ -1,13 +1,13 @@
-version: '3.8'
+version: "3.8"
 services:
   redis:
     image: redis
-    container_name: 'sbd_redis'
+    container_name: "sbd_redis"
     expose:
-      - '6379'
+      - "6379"
     restart: always
   django:
-    image: lux00leo/sbd_animal:1.1
+    image: lux00leo/sbd_animal:1.2.1
     environment:
       DJANGO_SETTINGS_MODULE: "settings.prod"
       DB_USER: "${DB_USER}"
@@ -18,8 +18,8 @@ services:
       AWS_ACCESS_KEY_ID: "${AWS_ACCESS_KEY_ID}"
       AWS_SECRET_ACCESS_KEY: "${AWS_SECRET_ACCESS_KEY}"
       AWS_STORAGE_BUCKET_NAME: "${AWS_STORAGE_BUCKET_NAME}"
-    ports:
-      - "8000:8000"
+    expose:
+      - "8000"
     links:
       - redis:sbd_redis
     depends_on:
@@ -27,7 +27,7 @@ services:
     command: bash -c "gunicorn --bind 0:8000 config.wsgi"
     restart: always
   celery:
-    image: lux00leo/sbd_animal:1.1
+    image: lux00leo/sbd_animal:1.2.1
     environment:
       DJANGO_SETTINGS_MODULE: "settings.prod"
       DB_USER: "${DB_USER}"
@@ -44,4 +44,14 @@ services:
       - redis
     command: bash -c "celery -A sbd_animal worker -l INFO"
     restart: always
-
+  nginx:
+    image: mynginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt
+    depends_on:
+      - django
+    links:
+      - django
