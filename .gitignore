@@ -9,3 +9,4 @@ dev_db/mysql/
 redis/
 backup_data/
 .env
+/docker-compose.yml
