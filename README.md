@@ -19,6 +19,7 @@
 ```
 
 # /sbd_animal
+```
 ├── __init__.py
 ├── __pycache__
 ├── accounts # API server : 유저 관리 (회원가입, 로그인)
@@ -29,4 +30,5 @@
 ├── storages.py # 배포 S3 storage 설정
 ├── urls.py
 └── work_out # API server : 운동 타입, 로그 관리
+```
 
