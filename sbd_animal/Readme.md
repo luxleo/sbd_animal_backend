@@ -1,13 +1,15 @@
 # 디렉터리 구조
 ```
 ├── __init__.py
-├── __pycache__
-├── accounts # API server : 유저 관리 (회원가입, 로그인)
-├── beastTamers # back office API
-├── bulletinBoard # API server : 문의 게시판
-├── celery.py  # 이메일 레디스 비동기큐로 보내기 위한 celery
-├── new_storage.py
-├── storages.py # 배포 S3 storage 설정
-├── urls.py
-└── work_out # API server : 운동 타입, 로그 관리
+├── config # wsgi, asgi
+├── dist # 백오피스 build js,css 파일
+├── docs # 진행중 에러사항 및 필기
+├── dummyLogs.pickle # 더미데이터 
+├── manage.py
+├── media
+├── sbd_admin_react # 백오피스 클라이언트 react
+├── sbd_animal # main project
+├── settings # prod,dev,local_docer settings
+└── static
+
 ```
