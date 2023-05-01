@@ -1,3 +1,4 @@
+[프로젝트 설명 노션 링크](https://supreme-marimba-1b5.notion.site/SBD-ANIMAL-d8982e6459f846fc9420ed03b3e61847)
 # 디렉터리 구조 /
 ```
 ├── backup_data # 개발환경 DB를 production 서버에 올리기 위한 백업 폴더입니다.
